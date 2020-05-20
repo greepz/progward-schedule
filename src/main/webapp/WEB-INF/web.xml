@@ -3,7 +3,15 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Hello</display-name>
+    <display-name>Hello</display-name>
 
+    <filter>
+      <filter-name>dispatchFilter</filter-name>
+      <filter-class>app.servlet.RequestDispatcherParamFilter</filter-class>
+    </filter>
 
+  <filter-mapping>
+    <filter-name>dispatchFilter</filter-name>
+    <url-pattern>/dispatch</url-pattern>
+  </filter-mapping>
 </web-app>

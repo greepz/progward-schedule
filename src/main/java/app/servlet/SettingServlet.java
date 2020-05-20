@@ -30,12 +30,18 @@ public class SettingServlet extends HttpServlet {
 
         resp.getWriter().println(convertToHtml(list));
 
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.getWriter().println("I'm post response, "+req.getParameter("name"));
     }
 
     private String convertToHtml(List<Setting> list) {
         StringBuilder builder = new StringBuilder();
-        builder.append("<!Doctype html><html><head><title>Settings</title><body><table>");
+        builder.append("<body><table cellpadding=\"0\" cellspacing=\"0\" border=\"1\">");
+        builder.append("<tr><th>ID</th><th>Name</th><th>Value</th></tr>");
         for (Setting setting: list){
             builder.append("<tr>");
             builder
@@ -45,7 +51,7 @@ public class SettingServlet extends HttpServlet {
             builder.append("</tr>");
 
         }
-        builder.append("</table></body></html>");
+        builder.append("</table></body>");
         return builder.toString();
     }
 

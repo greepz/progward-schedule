@@ -26,15 +26,9 @@ public class SettingFileRepository implements Repository<Setting> {
 
     @Override
     public List<Setting> get(){
-
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(SETTINGS_FILE)))){
-            StringBuilder builder = new StringBuilder();
-            String str = "";
-            while ((str = bufferedReader.readLine()) != null){
-                builder.append(str);
-            }
-            List<Setting> settings =  objectMapper.readValue(builder.toString(), new TypeReference<List<Setting>>() {
-            });
+         try {
+            List<Setting> settings =
+                    objectMapper.readValue(readFromFile(), new TypeReference<List<Setting>>() {});
             if (settings.isEmpty()){
                 throw new RuntimeException("Не удалось получить настройки системы");
             }
@@ -98,12 +92,34 @@ public class SettingFileRepository implements Repository<Setting> {
     }
 
     private void saveToFile(List<Setting> settings){
+        lock.writeLock().lock();
+        try {
+            try (PrintWriter pr = new PrintWriter(new FileWriter(SETTINGS_FILE))) {
+                String str = objectMapper.writeValueAsString(settings);
+                pr.println(str);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }finally {
+            lock.writeLock().unlock();
+        }
+    }
 
-        try(PrintWriter pr = new PrintWriter(new FileWriter(SETTINGS_FILE))){
-            String str = objectMapper.writeValueAsString(settings);
-            pr.println(str);
-        }catch (IOException ex){
-            throw new RuntimeException(ex.getMessage());
+    private String readFromFile(){
+        lock.readLock().lock();
+        try {
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(SETTINGS_FILE)))) {
+                StringBuilder builder = new StringBuilder();
+                String str = "";
+                while ((str = bufferedReader.readLine()) != null) {
+                    builder.append(str);
+                }
+                return builder.toString();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex.getMessage());
+            }
+        }finally {
+            lock.readLock().unlock();
         }
     }
 }
