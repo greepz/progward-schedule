@@ -42,7 +42,7 @@ public class MentorServlet extends HttpServlet {
             builder.append("<tr>");
             builder
                     .append("<td>"+mentor.getId()+"</td>")
-                    .append("<td>"+mentor.getName()+"</td>")
+                    .append("<td>"+mentor.getLogin()+"</td>")
                     .append("<td>"+mentor.getEmail()+"</td>");
             builder.append("</tr>");
 
