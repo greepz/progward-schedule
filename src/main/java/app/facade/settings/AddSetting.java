@@ -12,4 +12,5 @@ public class AddSetting {
         repository.save(setting);
     }
 
+
 }

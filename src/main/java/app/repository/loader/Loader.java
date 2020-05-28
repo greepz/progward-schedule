@@ -16,14 +16,11 @@ public class Loader {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-
-    public static void main(String[] args) {
+    public static void load(){
         loadSettings();
         List<Role> roles = loadRole();
         List<Mentor> mentors = loadMentors(roles);
         List<Client> clients = loadClients(roles);
-
-
     }
 
     private static List<Client> loadClients(List<Role> roles) {
@@ -88,7 +85,7 @@ public class Loader {
     }
 
 
-    public static List<Role> loadRole(){
+    private static List<Role> loadRole(){
         List<Role> roleList = new ArrayList<>();
         Role role = new Role();
         role.setId(UUID.randomUUID().toString());
@@ -104,7 +101,7 @@ public class Loader {
         return roleList;
     }
 
-    public static void loadSettings(){
+    private static void loadSettings(){
         List<Setting> settings = new ArrayList<>();
         Setting setting = new Setting();
         setting.setId(UUID.randomUUID().toString());

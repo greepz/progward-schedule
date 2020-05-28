@@ -2,20 +2,16 @@ package app.facade.settings;
 
 import app.factories.JsonSettingFactory;
 import app.repository.Repository;
-import app.repository.file.SettingFileRepository;
 import app.repository.model.Setting;
 
 import java.util.List;
 
-public class GetSettings {
+public class DeleteSettings {
 
     Repository<Setting> settings = JsonSettingFactory.getSettings();
 
-    public List<Setting> fromJson(){
-        return settings.get();
+    public void deleteFromJson(String id){
+        settings.delete(id);
     }
 
-    public Setting fromJsonById(String id){
-        return settings.get(id);
-    }
 }

@@ -2,6 +2,8 @@ package app.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Setting {
     private String id;
@@ -30,5 +32,20 @@ public class Setting {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Setting setting = (Setting) o;
+        return Objects.equals(id, setting.id) &&
+                Objects.equals(name, setting.name) &&
+                Objects.equals(value, setting.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, value);
     }
 }

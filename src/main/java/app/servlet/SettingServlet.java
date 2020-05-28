@@ -25,35 +25,19 @@ public class SettingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.setContentType("text/html; charset=UTF-8");
+       resp.setContentType("text/html; charset=UTF-8");
+
         List<Setting> list = settings.fromJson();
 
-        resp.getWriter().println(convertToHtml(list));
+       req.setAttribute("settings", list);
+
+       req.setAttribute("hello", "Hello World");
+
+       req.getRequestDispatcher("settings.jsp").forward(req, resp);
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");
-        resp.getWriter().println("I'm post response, "+req.getParameter("name"));
-    }
 
-    private String convertToHtml(List<Setting> list) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("<body><table cellpadding=\"0\" cellspacing=\"0\" border=\"1\">");
-        builder.append("<tr><th>ID</th><th>Name</th><th>Value</th></tr>");
-        for (Setting setting: list){
-            builder.append("<tr>");
-            builder
-                    .append("<td>"+setting.getId()+"</td>")
-                    .append("<td>"+setting.getName()+"</td>")
-                    .append("<td>"+setting.getValue()+"</td>");
-            builder.append("</tr>");
-
-        }
-        builder.append("</table></body>");
-        return builder.toString();
-    }
 
     @Override
     public void destroy() {
